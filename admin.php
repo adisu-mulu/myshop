@@ -133,7 +133,11 @@ include 'db.php';
                 <?php endif; ?>
             </div>
 
-            <button type="submit" name="save_announcement" class="btn btn-primary">Save Changes</button>
+            <?php if (!empty($announcement['content'])): ?>
+                <button type="submit" name="save_announcement" class="btn btn-primary">Save Changes</button>
+                <?php else :?>
+                    <button type="submit" name="add_announcement" class="btn btn-primary">Add Announcement</button>
+                    <?php endif; ?>
             <button type="submit" name="delete_announcement" class="btn btn-danger"
                 onclick="return confirm('Are you sure you want to delete this announcement?');">Delete</button>
 
