@@ -20,7 +20,7 @@ if ($conn->connect_error) {
 function fetchProducts() {
     global $conn;
     $products = [];
-    $sql = "SELECT title, description, price, image FROM products ORDER BY id DESC";
+    $sql = "SELECT id, title, description, price, image FROM products ORDER BY id DESC";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -33,7 +33,7 @@ function fetchProducts() {
 function fetchAllProducts() {
     global $conn;
     $products = [];
-    $sql = "SELECT title, description, price, image FROM products";
+    $sql = "SELECT id, title, description, price, image FROM products";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -110,9 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     }
 }
 
-if (isset($_GET['edit_id'])) {
+if (isset($_GET['edit_id']) || isset($_GET['product_id'])) {
     $editMode = true;
-    $id = $_GET['edit_id'];
+    if (isset($_GET['edit_id'])){
+        $id = $_GET['edit_id'];
+    }
+    if (isset($_GET['product_id'])){
+        $id = $_GET['product_id'];
+    }
     $result = $conn->query("SELECT * FROM products WHERE id = $id");
     if ($result && $result->num_rows > 0) {
         $productToEdit = $result->fetch_assoc();
@@ -320,7 +325,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['uploadMultiple'])) {
 function fetchExistingPhotos() {
     global $conn;
     $photos = [];
-    $id = $_GET["edit_id"];
+    if (isset($_GET['edit_id'])){
+        $id = $_GET["edit_id"];
+
+    }
+    if (isset($_GET['product_id'])){
+        $id = $_GET["product_id"];
+
+    }
     
     $sql = "SELECT *FROM morePhotos WHERE photoId = '$id'";
     $result = $conn->query($sql);
@@ -354,5 +366,42 @@ if (isset($_GET['photo_id'])) {
    
     
 }
+
+
+//save company info
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_comp_info'])) {
+    
+    $content = $_POST['company_description'];
+    $colA = $_POST['colA'];
+    $colB = $_POST['colB'];
+
+    // Sanitize the content to prevent SQL injection
+    $content = $conn->real_escape_string($content);
+    $colA = $conn->real_escape_string($colA);
+    $colB = $conn->real_escape_string($colB);
+    // Update the announcement in the database
+    $query = "UPDATE company SET description = '$content', colA = '$colA', colB = '$colB'";
+    if ($conn->query($query)) {
+        echo "update successfull!";
+        
+        exit;
+    } else {
+        echo "Error: " . $conn->error;
+    }
+}
+
+function fetchCompInfo() {
+    global $conn;
+    
+    $sql = "SELECT * from company";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+       return $result->fetch_assoc();
+    }
+    return null;
+}
+
+
 
 ?>

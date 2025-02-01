@@ -15,12 +15,21 @@ include 'db.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.1/tinymce.min.js"></script>
+   
+    <script>
+        tinymce.init({
+            selector: '#company_description',
+            plugins: 'advlist autolink lists link charmap print preview anchor',
+            toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+            menubar: false
+        });
+    </script>
 </head>
 
 <body>
     <div class="container my-5">
         <h1>Admin Panel</h1>
-
         <!-- Add Product Form -->
         <form method="POST" class="my-4" enctype="multipart/form-data">
             <h3>Add New Product</h3>
@@ -42,7 +51,7 @@ include 'db.php';
             </div>
             <button type="submit" name="add_product" class="btn btn-success">Add Product</button>
         </form>
-
+        <hr>
         <!-- Products Table -->
         <h3>Manage Products</h3>
         <table class="table table-bordered">
@@ -118,7 +127,7 @@ include 'db.php';
                 <?php endwhile; ?>
             </tbody>
         </table>
-
+        <hr>
         <h3>Manage Announcement</h3>
         <form method="POST" class="my-4">
             <input type="hidden" name="id" value="<?= $announcement['id'] ?>">
@@ -142,6 +151,20 @@ include 'db.php';
                 onclick="return confirm('Are you sure you want to delete this announcement?');">Delete</button>
 
         </form>
+        <hr>
+        <h3>Edit Company Info</h3>
+        <form  method="POST">
+        <label for="colA">Col A:</label><br>
+        <textarea id="company_description" name="colA" rows="2"></textarea><br><br>
+        <label for="colB">col B:</label><br>
+        <textarea id="company_description" name="colB" rows="2"></textarea><br><br>
+        <label for="company_description">Company Description:</label><br>
+        <textarea id="company_description" name="company_description" rows="2"></textarea><br><br>
+
+        <button type="submit" name="save_comp_info">Save Information</button>
+    </form>
+
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

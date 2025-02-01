@@ -2,6 +2,7 @@
     include 'db.php';
     $products = fetchProducts();
     $reviews = fetchReviews();
+    $comp_info = fetchCompInfo();
     ?>
 
 <!DOCTYPE html>
@@ -37,7 +38,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Logo</a>
+            <a class="navbar-brand" href="/">Logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -45,7 +46,7 @@
             <div class="navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#cmpInfo">Company Info</a>
@@ -70,20 +71,22 @@
             <?php if (count($products) > 0): ?>
             <?php foreach ($products as $product): ?>
             <div class="product-card">
-                <a href="details.html">
+                <a href="details.php?product_id=<?= $product['id'] ?>">
                     <img class="product-image" src="<?= htmlspecialchars($product['image']) ?>"
                         alt="<?= htmlspecialchars($product['title']) ?>">
                 </a>
                 <div class="product-details">
                     <h2 class="product-title"><?= htmlspecialchars($product['title']) ?></h2>
+
                     <p class="product-description"><?= htmlspecialchars($product['description']) ?></p>
-                    <p class="product-price" style="text-align: center;">Birr <?= htmlspecialchars($product['price']) ?>
+                    <p class="product-price">Birr <?= htmlspecialchars($product['price']) ?>
                     </p>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#buyNow"
-                        style="float: center;">
+                    <button type="button" class="btn btn-primary buy-now" data-toggle="modal" data-target="#buyNow"
+                        style="float: right;">
                         Buy Now
                     </button>
                 </div>
+
             </div>
             <?php endforeach; ?>
             <?php else: ?>
@@ -117,58 +120,50 @@
         </div>
     </div>
     <br><br><br><br>
-    
-        <h1>Speed is our satisfaction</h1>
-    
+
+    <h1>Speed is our satisfaction</h1>
+
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-6">
-                Welcome to Ethio-Amazone Moyale Brand (EAMB), your one-stop destination for quality products and
-                unbeatable
-                convenience! Discover a curated selection of premium items ranging from electronics, apparel, health and
-                beauty products, to home essentials and more. At EAMB, With free delivery, we prioritize your shopping
-                experience with easy navigation, secure payment options, and fast delivery. Whether you’re upgrading
-                your tech, refreshing your wardrobe, or searching for the perfect gift, we’ve got you covered. Shop
-                smart, save time, and enjoy exclusive deals every day. Join our growing community of satisfied customers
-                today!"
+                <?php if ($comp_info): ?>
+
+                <p><?= htmlspecialchars_decode($comp_info['colA']) ?></p>
+
+
+                <?php else: ?>
+                <p>No information available.</p>
+                <?php endif; ?>
             </div>
             <div class="col-12 col-md-6">
-                ETHIO-AMAZONE MOYALE BRAND
+                <?php if ($comp_info): ?>
+
+                <p><?= htmlspecialchars_decode($comp_info['colB']) ?></p>
+
+
+                <?php else: ?>
+                <p>No ny information available.</p>
+                <?php endif; ?>
             </div>
 
         </div>
     </div>
     <br><br><br><br>
     <div id="cmpInfo">
-         
-            <h1>Company Info</h1>
-        
+
+        <h1>Company Info</h1>
+
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <p>Ethio-Amazone Moyale Brand (EAMB) is a forward-thinking company that specializes in designing
-                        and
-                        manufacturing a diverse range of products while also sourcing high-quality items from around the
-                        world.
-                        Our mission is to make essential and innovative products accessible to everyone by offering them
-                        at
-                        competitive prices and ensuring efficient delivery systems.
-                    </p>
-                    <p>
-                        In addition to our own product lines, EAMB actively seeks out unique and high-demand products
-                        from
-                        international markets. By leveraging our extensive network of global suppliers, we can offer a
-                        curated selection of items that may not be readily available domestically. Our commitment to
-                        quality
-                        ensures that every product we source meets our rigorous standards
-                    </p>
-                    <p>
-                        One of the core tenets of EAMB is to provide affordability without compromising on quality. By
-                        strategically sourcing products from various regions, we can take advantage of cost efficiencies
-                        and
-                        pass those savings on to our customers. This approach enables us to offer competitive pricing,
-                        making it easier for consumers to access a wide range of products without breaking the bank.
-                    </p>
+                    <?php if ($comp_info): ?>
+
+                    <p><?= htmlspecialchars_decode($comp_info['description']) ?></p>
+
+
+                    <?php else: ?>
+                    <p>No company information available.</p>
+                    <?php endif; ?>
                 </div>
 
 
@@ -177,21 +172,21 @@
     </div>
     <br><br><br><br>
     <div id="prReview">
-        
-            <h1>Customer product review</h1>
-        
+
+        <h1>Customer product review</h1>
+
 
         <div class="container">
-        <?php if (count($reviews) > 0): ?>
+            <?php if (count($reviews) > 0): ?>
             <?php foreach ($reviews as $reviews): ?>
             <div class="row">
                 <div class="col-12 col-md-6">
                     <p>
-                    <?= htmlspecialchars($reviews['username']) ?>
+                        <?= htmlspecialchars($reviews['username']) ?>
                     </p>
                 </div>
                 <div class="col-12 col-md-6">
-                <?= htmlspecialchars($reviews['comment']) ?>
+                    <?= htmlspecialchars($reviews['comment']) ?>
                 </div>
             </div>
             <?php endforeach; ?>
@@ -219,9 +214,9 @@
                 <p>fisahamulu78@gmail.com</p>
                 <p>Social media</p>
             </div>
-            <div class="footer-column" >
+            <div class="footer-column">
                 <h3>Review us</h3>
-                <form  method="POST" id="review_us">
+                <form method="POST" id="review_us">
                     <div class="mb-2">
                         <input type="text" class="form-control" id="name" name="username" placeholder="Enter your name"
                             required>

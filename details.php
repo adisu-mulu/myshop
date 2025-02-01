@@ -1,7 +1,7 @@
 <?php
     include 'db.php';
-    $products = fetchAllProducts();
-    $reviews = fetchReviews();
+    $products = fetchProducts();
+    $photos = fetchExistingPhotos();
     ?>
 
 <!DOCTYPE html>
@@ -14,6 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.2.0/mdb.min.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet">
 </head>
 
@@ -33,7 +34,6 @@
 
         </div>
     </div>
-
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
@@ -55,39 +55,29 @@
                     </li>
                 </ul>
                 <form class="d-flex" action="search_results.php" method="GET">
-                    <input class="form-control me-2" type="search" placeholder="Looking for..." aria-label="Search" name="query" required>
+                    <input class="form-control me-2" type="search" placeholder="Looking for..." aria-label="Search"
+                        name="query" required>
                     <button class="btn btn-outline-success" type="submit" name="search_product">Search</button>
                 </form>
             </div>
         </div>
     </nav>
-    <br><br><br>
-    <div class="container">
-        <h1>Our Products</h1>
-        <br><br>
-        <div class="product-grid" id="productGrid">
-            <?php if (count($products) > 0): ?>
-            <?php foreach ($products as $product): ?>
-            <div class="product-card">
-                <a href="details.php?product_id=<?= $product['id'] ?>">
-                    <img class="product-image" src="<?= htmlspecialchars($product['image']) ?>"
-                        alt="<?= htmlspecialchars($product['title']) ?>">
-                </a>
-                <div class="product-details">
-                    <h2 class="product-title"><?= htmlspecialchars($product['title']) ?></h2>
-                    <p class="product-description"><?= htmlspecialchars($product['description']) ?></p>
-                    <p class="product-price" style="text-align: center;">Birr <?= htmlspecialchars($product['price']) ?>
-                    </p>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#buyNow"
-                        style="float: center;">
-                        Buy Now
-                    </button>
-                </div>
+
+    <div class="container" id="productDetails">
+        <div class="row align-items-right">
+            <!-- Product Image Column -->
+            <div class="col-md-5">
+                <img src="<?= htmlspecialchars($productToEdit['image']) ?>"
+                    alt="<?= htmlspecialchars($productToEdit['title']) ?>" class="img-fluid rounded">
             </div>
-            <?php endforeach; ?>
-            <?php else: ?>
-            <p>No products available.</p>
-            <?php endif; ?>
+
+            <!-- Product Details Column -->
+            <div class="col-md-7">
+                <h2><?= htmlspecialchars($productToEdit['title']) ?></h2>
+                <p><?= htmlspecialchars($productToEdit['description']) ?></p>
+                <p class="price">Birr <?= htmlspecialchars($productToEdit['price']) ?></p>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#buyNow">Buy Now</button>
+            </div>
         </div>
     </div>
 
@@ -115,9 +105,29 @@
             </div>
         </div>
     </div>
-    
 
-    <br><br><br><br>
+    <br><br><br>
+    <h3 style="text-align: center;"> Explore Gallery</h3>
+    <div class="container" id="productGallery">
+        <div class="gallery-wrapper" >
+
+            <?php if (count($photos) > 0): ?>
+            <?php foreach ($photos as $photos): ?>
+            <div class="col-md-2">
+                <img src="<?= htmlspecialchars($photos['photos']) ?>" alt="<?= htmlspecialchars($photos['photos']) ?>"
+                    class="img-fluid rounded">
+            </div>
+            <?php endforeach; ?>
+            <?php else: ?>
+            <p>No gallery available.</p>
+            <?php endif; ?>
+
+        </div>
+    </div>
+
+
+
+    <br><br><br>
     <div class="footer">
         <div class="footer-content">
             <div class="footer-column">
@@ -136,9 +146,9 @@
                 <p>fisahamulu78@gmail.com</p>
                 <p>Social media</p>
             </div>
-            <div class="footer-column" id="review_us">
+            <div class="footer-column">
                 <h3>Review us</h3>
-                <form  method="POST" >
+                <form method="POST" id="review_us">
                     <div class="mb-2">
                         <input type="text" class="form-control" id="name" name="username" placeholder="Enter your name"
                             required>
@@ -162,6 +172,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- MDB -->
 </body>
 
 </html>
