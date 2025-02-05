@@ -49,7 +49,7 @@ function searchProducts() {
     $products = [];
     
     $searchQuery = $conn->real_escape_string($_GET['query']);
-    $sql = "SELECT title, description, price, image FROM products where title LIKE '%$searchQuery%'";
+    $sql = "SELECT id, title, description, price, image FROM products where title LIKE '%$searchQuery%'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -174,6 +174,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_product'])) {
 
 // Fetch all products
 $products = $conn->query("SELECT * FROM products");
+
+//fetch announcement
 $ann = $conn->query("SELECT * FROM announcements");
 
     if ($ann && $ann->num_rows > 0) {
@@ -182,6 +184,13 @@ $ann = $conn->query("SELECT * FROM announcements");
         $announcement ="No announcemnts";
     }
 
+    $comInfo = $conn->query("SELECT * FROM company");
+
+    if ($comInfo && $comInfo->num_rows > 0) {
+        $companyInfo = $comInfo->fetch_assoc();
+    } else {
+        $companyInfo ="No company info";
+    }
 //saving announcemnts
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_announcement'])) {
     $id = $_POST['id'];

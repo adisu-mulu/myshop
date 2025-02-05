@@ -41,7 +41,7 @@
             <?php if (count($products) > 0): ?>
             <?php foreach ($products as $product): ?>
             <div class="product-card">
-                <a href="details.html">
+                <a href="details.php?product_id=<?= $product['id'] ?>">
                     <img class="product-image" src="<?= htmlspecialchars($product['image']) ?>"
                         alt="<?= htmlspecialchars($product['title']) ?>">
                 </a>
@@ -82,7 +82,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    <!-- <button type="button" class="btn btn-primary">Submit</button> -->
                 </div>
             </div>
         </div>

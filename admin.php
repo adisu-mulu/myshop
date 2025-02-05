@@ -155,11 +155,11 @@ include 'db.php';
         <h3>Edit Company Info</h3>
         <form  method="POST">
         <label for="colA">Col A:</label><br>
-        <textarea id="company_description" name="colA" rows="2"></textarea><br><br>
+        <textarea id="company_description" name="colA" rows="2"><?= htmlspecialchars($companyInfo['colA']) ?></textarea><br><br>
         <label for="colB">col B:</label><br>
-        <textarea id="company_description" name="colB" rows="2"></textarea><br><br>
+        <textarea id="company_description" name="colB" rows="2" ><?= htmlspecialchars($companyInfo['colB']) ?></textarea><br><br>
         <label for="company_description">Company Description:</label><br>
-        <textarea id="company_description" name="company_description" rows="2"></textarea><br><br>
+        <textarea id="company_description" name="company_description" rows="2" ><?= htmlspecialchars($companyInfo['description']) ?></textarea><br><br>
 
         <button type="submit" name="save_comp_info">Save Information</button>
     </form>
